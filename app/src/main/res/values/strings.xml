@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">WeatherApp</string>
+    <string name="location_name_text">new zealand</string>
+    <string name="location_degrees_text">19°</string>
+    <string name="location_description_text">Clear skies</string>
+    <string name="humidity_percent_text">78%</string>
+    <string name="humidity_text">Humidity</string>
+    <string name="visibility_distance_text">11km</string>
+    <string name="visibility_text">Visibility</string>
+    <string name="uv_index_value_text">Low O</string>
+    <string name="uv_index_text">UVIndex</string>
+    <!-- TODO: Remove or change this placeholder text -->
 </resources>
