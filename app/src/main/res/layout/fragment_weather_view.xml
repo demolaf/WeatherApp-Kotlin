@@ -3,10 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+        <variable
+            name="weatherViewModel"
+            type="com.example.weatherapp.viewmodels.WeatherViewModel" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".views.WeatherView">
+        tools:context=".views.WeatherViewFragment">
 
         <ImageView
             android:id="@+id/imageView"
@@ -30,7 +36,7 @@
                 android:id="@+id/weather_location_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/location_name_text"
+                android:text="@{weatherViewModel.countryName}"
                 android:textAllCaps="true"
                 android:textSize="16sp"
                 style="@style/all_text_color" />
@@ -39,9 +45,9 @@
                 android:id="@+id/weather_temperature_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/location_degrees_text"
+                android:text="@{weatherViewModel.temp.toString()}"
                 style="@style/all_text_color"
-                android:textSize="96sp" />
+                android:textSize="112sp" />
 
         </LinearLayout>
 
@@ -52,7 +58,7 @@
             android:gravity="fill_vertical"
             android:maxLines="1"
             android:rotation="270"
-            android:text="@string/location_description_text"
+            android:text="@{weatherViewModel.description}"
             style="@style/all_text_color"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
@@ -102,7 +108,7 @@
                 android:layout_width="1dp"
                 android:layout_height="24dp"
                 android:layout_gravity="center_vertical"
-                style="@style/all_text_color" />
+                android:background="@android:color/darker_gray"/>
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -133,7 +139,7 @@
                 android:layout_width="1dp"
                 android:layout_height="24dp"
                 android:layout_gravity="center_vertical"
-                style="@style/all_text_color" />
+                android:background="@android:color/darker_gray" />
 
             <LinearLayout
                 android:layout_width="wrap_content"

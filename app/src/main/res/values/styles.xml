@@ -3,5 +3,6 @@
 
     <style name="all_text_color">
         <item name="android:textColor">@android:color/black</item>
+        <item name="fontFamily">@font/rubik_regular</item>
     </style>
 </resources>
