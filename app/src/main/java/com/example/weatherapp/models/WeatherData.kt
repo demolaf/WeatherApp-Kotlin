@@ -44,7 +44,7 @@ data class WeatherData(
     @Expose
     private val cod: Int,
 )
-data class Main(
+class Main(
     @SerializedName("temp")
     @Expose
     private val temp: Double,
@@ -64,12 +64,12 @@ data class Main(
     @Expose
     private val humidity: Int,
 )
-data class Clouds(
+class Clouds(
     @SerializedName("all")
     @Expose
     private val all: Int,
 )
-data class Coord(
+class Coord(
     @SerializedName("lon")
     @Expose
     private val lon: Double,
@@ -77,7 +77,7 @@ data class Coord(
     @Expose
     private val lat: Double,
 )
-data class Sys(
+class Sys(
     @SerializedName("type")
     @Expose
     private val type: Int,
@@ -94,7 +94,7 @@ data class Sys(
     @Expose
     private val sunset: Int,
 )
-data class Weather(
+class Weather(
     @SerializedName("id")
     @Expose
     private val id: Int,
@@ -108,7 +108,7 @@ data class Weather(
     @Expose
     private val icon: String,
 )
-data class Wind(
+class Wind(
     @SerializedName("speed")
     @Expose
     private val speed: Double,

@@ -6,14 +6,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.weatherapp.models.WeatherData
 import com.example.weatherapp.models.WeatherService
-import kotlinx.coroutines.Delay
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.await
-import retrofit2.awaitResponse
 import java.lang.Exception
+import javax.security.auth.callback.Callback
 
 
 class WeatherViewModel : ViewModel() {
@@ -45,13 +40,13 @@ class WeatherViewModel : ViewModel() {
     }
 
     private suspend fun fetchCurrentWeather() {
-        try {
-            val currentWeatherResponse = weatherService.getWeatherAsync(6.50543, 3.3874)
-            if (currentWeatherResponse.isSuccessful) {
-                println(currentWeatherResponse.body())
-            }
+        /*try {
+            val result = weatherService.getWeatherAsync(6.50543, 3.3874)
+            result.enqueue(object: Callback<WeatherData> {
+
+            })
         } catch (e: Exception) {
 
-        }
+        }*/
     }
 }
