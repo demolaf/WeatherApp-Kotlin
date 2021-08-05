@@ -1,6 +1,7 @@
 package com.example.weatherapp.models
 
 import kotlinx.coroutines.Deferred
+
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.Retrofit
