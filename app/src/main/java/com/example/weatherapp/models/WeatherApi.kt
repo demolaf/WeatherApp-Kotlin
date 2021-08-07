@@ -17,6 +17,7 @@ interface WeatherApi {
     suspend fun getWeatherAsync(
         @Query("lat") lat: Double,
         @Query("lon") lon: Double,
-        @Query("appid") app_id : String = BuildConfig.apikey
-    ) : Call<WeatherData>
+        @Query("units") units: String = "metric",
+        @Query("appid") app_id : String = BuildConfig.apikey,
+    ) : Response<WeatherData>
 }

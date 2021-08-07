@@ -28,18 +28,42 @@ class WeatherViewFragment : Fragment() {
                 .layout.fragment_weather_view, container, false
         )
 
-        val viewModelFactory = WeatherViewModelFactory()
+        val viewModelFactory = WeatherViewModelFactory(context, activity)
 
         weatherViewModel =
             ViewModelProvider(this, viewModelFactory).get(WeatherViewModel::class.java)
 
         binding.weatherViewModel = weatherViewModel
 
-        weatherViewModel.load()
+        observeViewModel()
 
         return binding.root
     }
 
     private fun observeViewModel() {
+        weatherViewModel.temp.observe(viewLifecycleOwner, {
+            temp ->
+            binding.weatherTemperatureText.text = temp
+        })
+
+        weatherViewModel.countryName.observe(viewLifecycleOwner, {
+            countryName ->
+            binding.weatherLocationText.text = countryName
+        })
+
+        weatherViewModel.description.observe(viewLifecycleOwner, {
+            description ->
+            binding.weatherDescriptionText.text = description
+        })
+
+        weatherViewModel.humidity.observe(viewLifecycleOwner, {
+            humidity ->
+            binding.humidityText.text = humidity
+        })
+
+        weatherViewModel.visibility.observe(viewLifecycleOwner, {
+            visibility ->
+            binding.visibilityText.text = visibility
+        })
     }
 }

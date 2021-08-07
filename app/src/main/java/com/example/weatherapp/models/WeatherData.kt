@@ -43,8 +43,29 @@ data class WeatherData(
     @SerializedName("cod")
     @Expose
     private val cod: Int,
-)
-class Main(
+) {
+    fun getTemp(): String {
+        return this.main.getTemp()
+    }
+
+    fun getCountryName(): String {
+        return "${this.name} ${this.sys.getCountryName()}"
+    }
+
+    fun getDescription(): String {
+        return this.weather[0].getDescription()
+    }
+
+    fun getHumidity(): String {
+        return "${this.main.getHumidity()}%"
+    }
+
+    fun getVisibility(): String {
+        return this.visibility.toString()
+    }
+}
+
+data class Main(
     @SerializedName("temp")
     @Expose
     private val temp: Double,
@@ -63,13 +84,23 @@ class Main(
     @SerializedName("humidity")
     @Expose
     private val humidity: Int,
-)
-class Clouds(
+) {
+    fun getTemp(): String {
+        return this.temp.toString()
+    }
+
+    fun getHumidity(): String {
+        return this.humidity.toString()
+    }
+}
+
+data class Clouds(
     @SerializedName("all")
     @Expose
     private val all: Int,
 )
-class Coord(
+
+data class Coord(
     @SerializedName("lon")
     @Expose
     private val lon: Double,
@@ -77,7 +108,8 @@ class Coord(
     @Expose
     private val lat: Double,
 )
-class Sys(
+
+data class Sys(
     @SerializedName("type")
     @Expose
     private val type: Int,
@@ -93,8 +125,13 @@ class Sys(
     @SerializedName("sunset")
     @Expose
     private val sunset: Int,
-)
-class Weather(
+) {
+    fun getCountryName(): String {
+        return this.country
+    }
+}
+
+data class Weather(
     @SerializedName("id")
     @Expose
     private val id: Int,
@@ -107,8 +144,13 @@ class Weather(
     @SerializedName("icon")
     @Expose
     private val icon: String,
-)
-class Wind(
+) {
+    fun getDescription(): String {
+        return this.description
+    }
+}
+
+data class Wind(
     @SerializedName("speed")
     @Expose
     private val speed: Double,

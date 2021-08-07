@@ -17,7 +17,7 @@ class WeatherService {
         .build()
         .create(WeatherApi::class.java)
 
-    suspend fun getWeatherAsync(lat: Double, lon: Double): Call<WeatherData> {
+    suspend fun getWeatherAsync(lat: Double, lon: Double): Response<WeatherData> {
         return api.getWeatherAsync(lat, lon)
     }
 

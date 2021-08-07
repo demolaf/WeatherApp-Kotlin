@@ -45,7 +45,7 @@
                 android:id="@+id/weather_temperature_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@{weatherViewModel.temp.toString()}"
+                android:text=""
                 style="@style/all_text_color"
                 android:textSize="112sp" />
 
@@ -87,6 +87,7 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/humidity_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/humidity_percent_text"
@@ -118,6 +119,7 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/visibility_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/visibility_distance_text"
