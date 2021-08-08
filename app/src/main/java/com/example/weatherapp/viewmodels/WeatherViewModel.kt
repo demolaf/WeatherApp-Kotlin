@@ -1,40 +1,27 @@
 package com.example.weatherapp.viewmodels
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
-import android.location.LocationManager
 import android.os.Build
-import android.os.Bundle
-import android.os.Looper
-import android.provider.Settings
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat.getSystemService
-import androidx.core.content.ContextCompat.startActivity
-import androidx.core.content.getSystemService
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.weatherapp.models.Main
-import com.example.weatherapp.models.Weather
 import com.example.weatherapp.models.WeatherData
 import com.example.weatherapp.models.WeatherService
-import com.google.android.gms.common.api.ResolvableApiException
-import com.google.android.gms.location.*
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationResult
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.tasks.Task
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import retrofit2.Call
-import retrofit2.Response
-import java.lang.Exception
-import javax.security.auth.callback.Callback
 
 
 @RequiresApi(Build.VERSION_CODES.Q)
@@ -44,8 +31,10 @@ class WeatherViewModel(context: Context, activity: Activity) : ViewModel() {
 
     private var longitude: Double = 0.0
 
-    private var LOCATION_REQUEST_CODE = 1
+    private var locationRequestCode = 1
+
     private lateinit var lastLocation: Location
+
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
     private val weatherService = WeatherService()
@@ -72,8 +61,6 @@ class WeatherViewModel(context: Context, activity: Activity) : ViewModel() {
 
     init {
         getLocation(context, activity)
-        //load()
-        println("THIS IS INFO $latitude $longitude")
         _temp.value = ""
         _description.value = ""
         _countryName.value = ""
@@ -81,16 +68,16 @@ class WeatherViewModel(context: Context, activity: Activity) : ViewModel() {
         _visibility.value = ""
     }
 
-    /*fun load() {
-        viewModelScope.launch {
-            fetchCurrentWeather()
+    fun load() {
+        println("load() $$$$$$$$ $latitude, $longitude")
+        viewModelScope.launch(Dispatchers.Main) {
+            fetchCurrentWeather(latitude, longitude)
         }
-    }*/
+    }
 
     @RequiresApi(Build.VERSION_CODES.Q)
     private fun getLocation(context: Context, activity: Activity) {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(activity)
-
         if (ActivityCompat.checkSelfPermission(
                 context, Manifest.permission
                     .ACCESS_FINE_LOCATION
@@ -113,9 +100,8 @@ class WeatherViewModel(context: Context, activity: Activity) : ViewModel() {
                         .ACCESS_BACKGROUND_LOCATION,
                     Manifest.permission.ACCESS_COARSE_LOCATION
                 ),
-                LOCATION_REQUEST_CODE,
+                locationRequestCode,
             )
-
             return
         }
         fusedLocationClient.lastLocation.addOnSuccessListener(activity) { location ->
@@ -123,9 +109,9 @@ class WeatherViewModel(context: Context, activity: Activity) : ViewModel() {
                 lastLocation = location
                 latitude = location.latitude
                 longitude = location.longitude
-                println("$$$$$$$$$$$$$$$$${location.latitude} ${location.longitude}")
+                println("$$$$$$$$$$$$$$$ $latitude   $longitude")
                 viewModelScope.launch {
-                    fetchCurrentWeather(location.latitude, location.longitude)
+                    fetchCurrentWeather(latitude, longitude)
                 }
             }
         }
@@ -133,7 +119,6 @@ class WeatherViewModel(context: Context, activity: Activity) : ViewModel() {
 
     private suspend fun fetchCurrentWeather(lat: Double, lon: Double) {
         val response = weatherService.getWeatherAsync(lat, lon)
-
         try {
             if (response.isSuccessful) {
                 println(response.body())
@@ -146,7 +131,6 @@ class WeatherViewModel(context: Context, activity: Activity) : ViewModel() {
                 _humidity.value = data.getHumidity()
             }
         } catch (e: Exception) {
-
 
         }
     }
