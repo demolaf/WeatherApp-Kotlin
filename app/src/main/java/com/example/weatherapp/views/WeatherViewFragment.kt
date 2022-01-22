@@ -50,29 +50,13 @@ class WeatherViewFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        weatherViewModel.temp.observe(viewLifecycleOwner, {
-            temp ->
-            binding.weatherTemperatureText.text = temp
-        })
-
-        weatherViewModel.countryName.observe(viewLifecycleOwner, {
-            countryName ->
-            binding.weatherLocationText.text = countryName
-        })
-
-        weatherViewModel.description.observe(viewLifecycleOwner, {
-            description ->
-            binding.weatherDescriptionText.text = description
-        })
-
-        weatherViewModel.humidity.observe(viewLifecycleOwner, {
-            humidity ->
-            binding.humidityText.text = humidity
-        })
-
-        weatherViewModel.visibility.observe(viewLifecycleOwner, {
-            visibility ->
-            binding.visibilityText.text = visibility
+        weatherViewModel.currentWeatherData.observe(viewLifecycleOwner, {
+            data ->
+            binding.weatherLocationText.text = data.getCountryName()
+            binding.weatherTemperatureText.text = data.getTemp()
+            binding.weatherDescriptionText.text = data.getDescription()
+            binding.humidityText.text = data.getHumidity()
+            binding.visibilityText.text = data.getVisibility()
         })
     }
 }

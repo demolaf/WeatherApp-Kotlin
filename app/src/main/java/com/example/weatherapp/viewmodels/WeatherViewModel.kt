@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.LiveData
@@ -22,10 +23,13 @@ import com.google.android.gms.tasks.Task
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import retrofit2.Response
 
 
 @RequiresApi(Build.VERSION_CODES.Q)
 class WeatherViewModel(context: Context, activity: Activity) : ViewModel() {
+
+    private val LOG_TAG = "WeatherViewModel"
 
     private var latitude: Double = 0.0
 
@@ -39,33 +43,14 @@ class WeatherViewModel(context: Context, activity: Activity) : ViewModel() {
 
     private val weatherService = WeatherService()
 
-    private var _temp = MutableLiveData<String>()
-    val temp: LiveData<String>
-        get() = _temp
-
-    private var _description = MutableLiveData<String>()
-    val description: LiveData<String>
-        get() = _description
-
-    private var _countryName = MutableLiveData<String>()
-    val countryName: LiveData<String>
-        get() = _countryName
-
-    private var _humidity = MutableLiveData<String>()
-    val humidity: LiveData<String>
-        get() = _humidity
-
-    private var _visibility = MutableLiveData<String>()
-    val visibility: LiveData<String>
-        get() = _visibility
+    private var _currentWeatherData = MutableLiveData<WeatherData>()
+    val currentWeatherData: LiveData<WeatherData>
+        get() {
+            return _currentWeatherData
+        }
 
     init {
         getLocation(context, activity)
-        _temp.value = ""
-        _description.value = ""
-        _countryName.value = ""
-        _humidity.value = ""
-        _visibility.value = ""
     }
 
     fun load() {
@@ -118,20 +103,16 @@ class WeatherViewModel(context: Context, activity: Activity) : ViewModel() {
     }
 
     private suspend fun fetchCurrentWeather(lat: Double, lon: Double) {
-        val response = weatherService.getWeatherAsync(lat, lon)
+        val response: Response<WeatherData> = weatherService.getWeatherAsync(lat, lon)
         try {
             if (response.isSuccessful) {
                 println(response.body())
                 val data: WeatherData = response.body()!!
                 println("This is temp: ${data.getTemp()}")
-                _temp.value = data.getTemp()
-                _countryName.value = data.getCountryName()
-                _description.value = data.getDescription()
-                _visibility.value = data.getVisibility()
-                _humidity.value = data.getHumidity()
+                _currentWeatherData.value = data
             }
         } catch (e: Exception) {
-
+            Log.i(LOG_TAG, e.toString())
         }
     }
 }
